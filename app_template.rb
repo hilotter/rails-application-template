@@ -69,6 +69,11 @@ end
 
 run "bundle install -j5 --path=vendor/bundler"
 
+# generate base_controller
+# ==================================================
+generate(:controller, "base")
+generate(:controller, "api::base")
+
 # install spec_helper.rb
 # ==================================================
 generate "rspec:install"
@@ -176,6 +181,15 @@ end
 # ==================================================
 if is_whenever
   run "bundle exec wheneverize"
+end
+
+# setting omniauth
+# ==================================================
+if is_twitter || is_facebook
+generate(:controller, "sessions")
+route "get '/auth/:provider/callback', :to => 'sessions#callback'"
+route "post '/auth/:provider/callback', :to => 'sessions#callback'"
+route "get '/logout' => 'sessions#destroy', :as => :logout"
 end
 
 # setting .gitignore
