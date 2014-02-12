@@ -201,7 +201,7 @@ file '.gitignore', <<-CODE
 /log/*.log
 /tmp
 db/schema.rb
-vendor/bundle
+vendor/bundler
 coverage
 CODE
 
