@@ -1,12 +1,12 @@
-def echo(text); run "echo #{text}"; end
-is_twitter = false
-is_facebook = false
-is_whenever = false
+#
+# Rails Application Template
+#
+
+repo_url = "https://raw2.github.com/hilotter/rails-application-template/master"
+gems = {}
 
 # gems
 # ==================================================
-echo "Add gem file"
-
 gem_group :test, :development do
   gem "pry-rails"
   gem "rails-erd"
@@ -17,32 +17,33 @@ gem_group :test, :development do
 end
 
 gem 'settingslogic'
+uncomment_lines 'Gemfile', "gem 'unicorn'"
 
 if yes?('create mock?(bootstrap)')
   gem 'simple_form'
-  gem 'therubyracer'
+  uncomment_lines 'Gemfile', "gem 'therubyracer'"
   gem 'less-rails'
   gem 'twitter-bootstrap-rails'
 end
 
-if yes?("use twitter login?")
-  is_twitter = true
+gems['twitter'] = yes?("use twitter login?")
+if gems['twitter']
   gem 'omniauth'
   gem 'omniauth-twitter'
+
+  if yes?("use twitter api?")
+    gem 'twitter'
+  end
 end
 
-if yes?("use twitter api?")
-  gem 'twitter'
-end
-
-if yes?("use facebook login?")
-  is_facebook = true
+gems['facebook'] = yes?("use facebook login?")
+if gems['facebook']
   gem 'omniauth'
   gem 'omniauth-facebook'
-end
 
-if yes?("use facebook api?")
-  gem 'koala'
+  if yes?("use facebook api?")
+    gem 'koala'
+  end
 end
 
 if yes?("use carrierwave ?")
@@ -50,8 +51,8 @@ if yes?("use carrierwave ?")
   gem 'rmagick', :require => false
 end
 
-if yes?('use cron?')
-  is_whenever = true
+gems['whenever'] = yes?('use whenever?')
+if gems['whenever']
   gem 'whenever'
 end
 
@@ -63,11 +64,25 @@ if yes?('use kaminari?')
   gem 'kaminari'
 end
 
-if yes?("use jpmobile?")
+if yes?('use jpmobile?')
   gem 'jpmobile'
 end
 
-run "bundle install -j5 --path=vendor/bundler"
+gems['redis'] = yes?('use redis?')
+if gems['redis']
+    gem 'redis'
+
+    gems['redis-rails'] = yes?('use redis-rails? (redis session)')
+    if gems['redis-rails']
+      gem 'redis-rails'
+    end
+end
+
+if yes?('bundle install to vendor/bundler?')
+run 'bundle install -j5 --path=vendor/bundler'
+else
+run 'bundle install -j5'
+end
 
 # generate base_controller
 # ==================================================
@@ -81,7 +96,7 @@ run "rm -rf test"
 
 # add settingslogic config
 # ==================================================
-if is_twitter && is_facebook
+if gems['twitter'] && gems['facebook']
 file 'config/settings.yml', <<-CODE
   defaults: &defaults
     twitter:
@@ -100,7 +115,7 @@ file 'config/settings.yml', <<-CODE
   production:
     <<: *defaults
 CODE
-elsif is_twitter
+elsif gems['twitter']
 file 'config/settings.yml', <<-CODE
   defaults: &defaults
     twitter:
@@ -116,7 +131,7 @@ file 'config/settings.yml', <<-CODE
   production:
     <<: *defaults
 CODE
-elsif is_facebook
+elsif gems['facebook']
 file 'config/settings.yml', <<-CODE
   defaults: &defaults
     facebook:
@@ -156,40 +171,40 @@ CODE
 
 # add omniauth config
 # ==================================================
-if is_twitter && is_facebook
+if gems['twitter'] && gems['facebook']
 initializer 'omniauth.rb', <<-CODE
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :twitter, Settings.twitter.consumer_key, Settings.twitter.consumer_secret
     provider :facebook, Settings.facebook.app_id, Settings.facebook.app_secret
   end
 CODE
-elsif is_twitter
+elsif gems['twitter']
 initializer 'omniauth.rb', <<-CODE
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :twitter, Settings.twitter.consumer_key, Settings.twitter.consumer_secret
   end
 CODE
-elsif is_facebook
+elsif gems['facebook']
 initializer 'omniauth.rb', <<-CODE
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :facebook, Settings.facebook.app_id, Settings.facebook.app_secret
   end
 CODE
-end
-
-# setting whenever
-# ==================================================
-if is_whenever
-  run "bundle exec wheneverize"
 end
 
 # setting omniauth
 # ==================================================
-if is_twitter || is_facebook
+if gems['twitter'] || gems['facebook']
 generate(:controller, "sessions")
 route "get '/auth/:provider/callback', :to => 'sessions#callback'"
 route "post '/auth/:provider/callback', :to => 'sessions#callback'"
 route "get '/logout' => 'sessions#destroy', :as => :logout"
+end
+
+# setting whenever
+# ==================================================
+if gems['whenever']
+  run "bundle exec wheneverize"
 end
 
 # setting .gitignore
@@ -204,5 +219,4 @@ db/schema.rb
 vendor/bundler
 coverage
 CODE
-
 
