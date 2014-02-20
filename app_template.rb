@@ -18,6 +18,7 @@ end
 
 gem 'settingslogic'
 uncomment_lines 'Gemfile', "gem 'unicorn'"
+gem 'execjs'
 uncomment_lines 'Gemfile', "gem 'therubyracer'"
 
 if yes?('create mock?(bootstrap)')
