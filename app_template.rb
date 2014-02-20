@@ -18,10 +18,10 @@ end
 
 gem 'settingslogic'
 uncomment_lines 'Gemfile', "gem 'unicorn'"
+uncomment_lines 'Gemfile', "gem 'therubyracer'"
 
 if yes?('create mock?(bootstrap)')
   gem 'simple_form'
-  uncomment_lines 'Gemfile', "gem 'therubyracer'"
   gem 'less-rails'
   gem 'twitter-bootstrap-rails'
 end
