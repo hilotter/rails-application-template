@@ -2,7 +2,7 @@
 # Rails Application Template
 #
 
-repo_url = "https://raw2.github.com/hilotter/rails-application-template/master"
+repo_url = "https://raw.githubusercontent.com/hilotter/rails-application-template/master"
 gems = {}
 
 # gems

@@ -4,9 +4,9 @@
 
 ```
 # new application
-rails new #{app_name} -m https://raw2.github.com/hilotter/rails-application-template/master/app_template.rb -d mysql
+rails new #{app_name} -m https://raw.githubusercontent.com/hilotter/rails-application-template/master/app_template.rb -d mysql
 
 # existing application
-rake rails:template LOCATION=https://raw2.github.com/hilotter/rails-application-template/master/app_template.rb
+rake rails:template LOCATION=https://raw.githubusercontent.com/hilotter/rails-application-template/master/app_template.rb
 ```
 
