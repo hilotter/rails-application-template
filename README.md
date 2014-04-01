@@ -6,7 +6,7 @@
 # new application
 rails new #{app_name} -m https://raw.githubusercontent.com/hilotter/rails-application-template/master/app_template.rb -d mysql
 
-# existing application
+# existing application (override)
 rake rails:template LOCATION=https://raw.githubusercontent.com/hilotter/rails-application-template/master/app_template.rb
 ```
 

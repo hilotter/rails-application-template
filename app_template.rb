@@ -16,7 +16,7 @@ gem_group :test, :development do
   gem 'simplecov-rcov', :require => false
 end
 
-gem 'settingslogic'
+gem 'rails_config'
 uncomment_lines 'Gemfile', "gem 'unicorn'"
 gem 'execjs'
 uncomment_lines 'Gemfile', "gem 'therubyracer'"
@@ -95,102 +95,47 @@ generate(:controller, "api::base")
 generate "rspec:install"
 run "rm -rf test"
 
-# add settingslogic config
+# add rails_config
 # ==================================================
-if gems['twitter'] && gems['facebook']
-file 'config/settings.yml', <<-CODE
-  defaults: &defaults
-    twitter:
-      consumer_key: <CONSUMER KEY>
-      consumer_secret: <CONSUMER SECRET>>
-    facebook:
-      app_id: <APP ID>
-      app_secret: <APP SECRET>>
-  
-  development:
-    <<: *defaults
-  
-  test:
-    <<: *defaults
-  
-  production:
-    <<: *defaults
-CODE
-elsif gems['twitter']
-file 'config/settings.yml', <<-CODE
-  defaults: &defaults
-    twitter:
-      consumer_key: <CONSUMER KEY>
-      consumer_secret: <CONSUMER SECRET>>
-  
-  development:
-    <<: *defaults
-  
-  test:
-    <<: *defaults
-  
-  production:
-    <<: *defaults
-CODE
-elsif gems['facebook']
-file 'config/settings.yml', <<-CODE
-  defaults: &defaults
-    facebook:
-      app_id: <APP ID>
-      app_secret: <APP SECRET>>
-  
-  development:
-    <<: *defaults
-  
-  test:
-    <<: *defaults
-  
-  production:
-    <<: *defaults
-CODE
-else
-file 'config/settings.yml', <<-CODE
-  defaults: &defaults
-  
-  development:
-    <<: *defaults
-  
-  test:
-    <<: *defaults
-  
-  production:
-    <<: *defaults
+generate("rails_config:install")
+rails_config = ''
+if gems['twitter']
+  rails_config.concat <<-CODE
+twitter:
+  consumer_key: <CONSUMER KEY>
+  consumer_secret: <CONSUMER SECRET>>
 CODE
 end
-
-initializer '0_settings.rb', <<-CODE
-  class Settings < Settingslogic
-    source "#\{Rails.root\}/config/settings.yml"
-    namespace Rails.env
-  end
+if gems['facebook']
+  rails_config.concat <<-CODE
+facebook:
+  app_id: <APP ID>
+  app_secret: <APP SECRET>>
 CODE
+end
+if gems['twitter'] || gems['facebook']
+  file 'config/settings.yml', rails_config
+end
 
 # add omniauth config
 # ==================================================
-if gems['twitter'] && gems['facebook']
-initializer 'omniauth.rb', <<-CODE
-  Rails.application.config.middleware.use OmniAuth::Builder do
-    provider :twitter, Settings.twitter.consumer_key, Settings.twitter.consumer_secret
-    provider :facebook, Settings.facebook.app_id, Settings.facebook.app_secret
-  end
+omniauth = ''
+if gems['twitter']
+  omniauth.concat <<-CODE
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :twitter, Settings.twitter.consumer_key, Settings.twitter.consumer_secret
+end
 CODE
-elsif gems['twitter']
-initializer 'omniauth.rb', <<-CODE
-  Rails.application.config.middleware.use OmniAuth::Builder do
-    provider :twitter, Settings.twitter.consumer_key, Settings.twitter.consumer_secret
-  end
+end
+if gems['facebook']
+  omniauth.concat <<-CODE
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :facebook, Settings.facebook.app_id, Settings.facebook.app_secret
+end
 CODE
-elsif gems['facebook']
-initializer 'omniauth.rb', <<-CODE
-  Rails.application.config.middleware.use OmniAuth::Builder do
-    provider :facebook, Settings.facebook.app_id, Settings.facebook.app_secret
-  end
-CODE
+end
+if gems['twitter'] || gems['facebook']
+  initializer 'omniauth.rb', omniauth
 end
 
 # setting omniauth
@@ -210,14 +155,12 @@ end
 
 # setting .gitignore
 # ==================================================
-file '.gitignore', <<-CODE
-/.bundle
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/log/*.log
-/tmp
+gitignore = <<-CODE
 db/schema.rb
 vendor/bundler
 coverage
 CODE
+File.open('.gitignore', 'a') do |file|
+  file.write gitignore
+end
 
