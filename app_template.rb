@@ -148,7 +148,12 @@ end
 # setting omniauth
 # ==================================================
 if gems['twitter'] || gems['facebook']
+generate(:model, "user provider:string uid:string name:string")
 generate(:controller, "sessions")
+remove_file "app/models/user.rb"
+get "#{repo_url}/app/models/user.rb", "app/models/user.rb"
+remove_file "app/controllers/sessions_controller.rb"
+get "#{repo_url}/app/controllers/sessions_controller.rb", "app/controllers/sessions_controller.rb"
 route "get '/auth/:provider/callback', :to => 'sessions#callback'"
 route "post '/auth/:provider/callback', :to => 'sessions#callback'"
 route "get '/logout' => 'sessions#destroy', :as => :logout"
