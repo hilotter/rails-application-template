@@ -20,6 +20,8 @@ gem 'rails_config'
 uncomment_lines 'Gemfile', "gem 'unicorn'"
 gem 'execjs'
 uncomment_lines 'Gemfile', "gem 'therubyracer'"
+gem 'god', require: false
+uncomment_lines 'Gemfile', "gem 'capistrano'"
 
 if yes?('create mock?(bootstrap)')
   gem 'simple_form'
@@ -98,24 +100,29 @@ run "rm -rf test"
 # add rails_config
 # ==================================================
 generate("rails_config:install")
-rails_config = ''
+rails_config = <<-CODE
+s3:
+  bucket: <bucket>
+  endpoint_url: <s 3url>
+cloud_front:
+  endpoint_url: <cl url>
+use_cloud_front: false
+CODE
 if gems['twitter']
   rails_config.concat <<-CODE
 twitter:
   consumer_key: <CONSUMER KEY>
-  consumer_secret: <CONSUMER SECRET>>
+  consumer_secret: <CONSUMER SECRET>
 CODE
 end
 if gems['facebook']
   rails_config.concat <<-CODE
 facebook:
   app_id: <APP ID>
-  app_secret: <APP SECRET>>
+  app_secret: <APP SECRET>
 CODE
 end
-if gems['twitter'] || gems['facebook']
-  file 'config/settings.yml', rails_config
-end
+file 'config/settings.yml', rails_config
 
 # add omniauth config
 # ==================================================
@@ -152,6 +159,11 @@ end
 if gems['whenever']
   run "bundle exec wheneverize"
 end
+
+# helpers
+# ==================================================
+remove_file "app/helpers/application_helper.rb"
+get "#{repo_url}/app/helpers/application_helper.rb", "app/helpers/application_helper.rb"
 
 # setting .gitignore
 # ==================================================
