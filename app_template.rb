@@ -142,6 +142,11 @@ end
 CODE
 end
 if gems['twitter'] || gems['facebook']
+  omniauth.concat <<-CODE
+OmniAuth.config.on_failure = Proc.new { |env|
+  OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+}
+CODE
   initializer 'omniauth.rb', omniauth
 end
 
