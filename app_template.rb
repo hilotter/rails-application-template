@@ -2,16 +2,16 @@
 # Rails Application Template
 #
 
-repo_url = "https://raw.githubusercontent.com/hilotter/rails-application-template/master"
+repo_url = 'https://raw.githubusercontent.com/hilotter/rails-application-template/master'
 gems = {}
 
 # gems
 # ==================================================
 gem_group :test, :development do
-  gem "pry-rails"
-  gem "rails-erd"
-  gem "rspec-rails"
-  gem "factory_girl_rails"
+  gem 'pry-rails'
+  gem 'rails-erd'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'simplecov', :require => false
   gem 'simplecov-rcov', :require => false
 end
@@ -29,27 +29,27 @@ if yes?('create mock?(bootstrap)')
   gem 'twitter-bootstrap-rails'
 end
 
-gems['twitter'] = yes?("use twitter login?")
+gems['twitter'] = yes?('use twitter login?')
 if gems['twitter']
   gem 'omniauth'
   gem 'omniauth-twitter'
 
-  if yes?("use twitter api?")
+  if yes?('use twitter api?')
     gem 'twitter'
   end
 end
 
-gems['facebook'] = yes?("use facebook login?")
+gems['facebook'] = yes?('use facebook login?')
 if gems['facebook']
   gem 'omniauth'
   gem 'omniauth-facebook'
 
-  if yes?("use facebook api?")
+  if yes?('use facebook api?')
     gem 'koala'
   end
 end
 
-if yes?("use carrierwave ?")
+if yes?('use carrierwave ?')
   gem 'carrierwave'
   gem 'rmagick', :require => false
 end
@@ -89,17 +89,17 @@ end
 
 # generate base_controller
 # ==================================================
-generate(:controller, "base")
-generate(:controller, "api::base")
+generate(:controller, 'base')
+generate(:controller, 'api::base')
 
 # install spec_helper.rb
 # ==================================================
-generate "rspec:install"
-run "rm -rf test"
+generate 'rspec:install'
+run 'rm -rf test'
 
 # add rails_config
 # ==================================================
-generate("rails_config:install")
+generate('rails_config:install')
 rails_config = <<-CODE
 s3:
   bucket: <bucket>
@@ -153,12 +153,12 @@ end
 # setting omniauth
 # ==================================================
 if gems['twitter'] || gems['facebook']
-generate(:model, "user provider:string uid:string name:string")
-generate(:controller, "sessions")
-remove_file "app/models/user.rb"
-get "#{repo_url}/app/models/user.rb", "app/models/user.rb"
-remove_file "app/controllers/sessions_controller.rb"
-get "#{repo_url}/app/controllers/sessions_controller.rb", "app/controllers/sessions_controller.rb"
+generate(:model, 'user provider:string uid:string name:string')
+generate(:controller, 'sessions')
+remove_file 'app/models/user.rb'
+get "#{repo_url}/app/models/user.rb", 'app/models/user.rb'
+remove_file 'app/controllers/sessions_controller.rb'
+get "#{repo_url}/app/controllers/sessions_controller.rb", 'app/controllers/sessions_controller.rb'
 route "get '/auth/:provider/callback', :to => 'sessions#callback'"
 route "post '/auth/:provider/callback', :to => 'sessions#callback'"
 route "get '/logout' => 'sessions#destroy', :as => :logout"
@@ -167,13 +167,13 @@ end
 # setting whenever
 # ==================================================
 if gems['whenever']
-  run "bundle exec wheneverize"
+  run 'bundle exec wheneverize'
 end
 
 # helpers
 # ==================================================
-remove_file "app/helpers/application_helper.rb"
-get "#{repo_url}/app/helpers/application_helper.rb", "app/helpers/application_helper.rb"
+remove_file 'app/helpers/application_helper.rb'
+get "#{repo_url}/app/helpers/application_helper.rb", 'app/helpers/application_helper.rb'
 
 # setting .gitignore
 # ==================================================
