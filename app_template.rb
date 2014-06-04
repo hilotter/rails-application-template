@@ -16,6 +16,19 @@ gem_group :test, :development do
   gem 'simplecov-rcov', :require => false
 end
 
+gem_group :test do
+  gem 'fuubar'
+  gem 'faker'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'launchy'
+end
+
+gem_group :development do
+  gem 'bullet'
+  gem 'rack-mini-profiler'
+end
+
 gem 'rails_config'
 uncomment_lines 'Gemfile', "gem 'unicorn'"
 gem 'execjs'
@@ -89,8 +102,7 @@ end
 
 # generate base_controller
 # ==================================================
-generate(:controller, 'base')
-generate(:controller, 'api::base')
+generate(:controller, 'api::application')
 
 # install spec_helper.rb
 # ==================================================
