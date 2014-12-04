@@ -6,7 +6,7 @@ CONFIG       = YAML.load_file(RAILS_ROOT + "/config/unicorn.yml")[RAILS_ENV]
 worker_processes CONFIG["worker_processes"]
 preload_app true
 timeout 60
-listen CONFIG["worker_processes"], :backlog => 64
+listen CONFIG["listen"], :backlog => 64
 
 pid "#{RAILS_ROOT}/tmp/pids/unicorn.pid"
 
