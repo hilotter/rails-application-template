@@ -1,5 +1,7 @@
 development:
   worker_processes: 2
+  listen: 3000
 
 production:
   worker_processes: 16
+  listen: "production-app-path/tmp/sockets/unicorn.sock"
