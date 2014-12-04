@@ -1,0 +1,5 @@
+development:
+  worker_processes: 2
+
+production:
+  worker_processes: 16
