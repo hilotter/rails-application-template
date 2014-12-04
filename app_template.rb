@@ -274,7 +274,6 @@ File.open('.gitignore', 'a') do |file|
 end
 
 if yes?('run migrate ?')
-  rake "db:drop"
   rake "db:create"
   rake "db:migrate"
 end
