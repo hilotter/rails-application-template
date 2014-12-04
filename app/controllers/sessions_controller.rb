@@ -1,14 +1,7 @@
 class SessionsController < ApplicationController
   def callback
-    auth = request.env['omniauth.auth']
-
-    ActiveRecord::Base.transaction do
-      user = User.find_or_create_by(provider: auth['provider'], uid: auth['uid'])
-      raise 'can not get user' if !user
-      user.update_with_omniauth(auth)
-      session[:user_id] = user.id
-    end
-
+    user = User.find_or_create_from_auth_hash(request.env['omniauth.auth'])
+    session[:user_id] = user.id
     redirect_to root_path
   end
 
@@ -20,6 +13,4 @@ class SessionsController < ApplicationController
   def failure
     return redirect_to root_path
   end
-
 end
-
