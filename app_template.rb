@@ -182,6 +182,7 @@ get "#{repo_url}/config/unicorn.yml", 'config/unicorn.yml'
 # setting rspec
 # ==================================================
 generate 'rspec:install'
+run 'bundle exec guard init rspec'
 run 'rm -rf test'
 
 # setting rails_config
