@@ -129,6 +129,9 @@ end
 # ==================================================
 run 'cp config/database.yml config/database.yml.sample'
 
+# refs http://qiita.com/hnakamur/items/762db1a764fcf3583214
+gsub_file 'config/database.yml', /^  encoding: utf8$/, "\\0\n  collation: utf8_general_ci"
+
 if yes?('create home controller ?')
   generate(:controller, 'home index')
   route "root to: 'home#index'"
