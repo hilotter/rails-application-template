@@ -186,6 +186,7 @@ run 'bundle exec guard init rspec'
 run 'rm -rf test'
 uncomment_lines 'spec/rails_helper.rb', /Dir\[Rails\.root\.join/
 get "#{repo_url}/spec/support/factory_girl.rb", 'spec/support/factory_girl.rb'
+get "#{repo_url}/spec/support/database_cleaner.rb", 'spec/support/database_cleaner.rb'
 
 # setting rails_config
 # ==================================================
