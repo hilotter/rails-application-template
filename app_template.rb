@@ -16,7 +16,7 @@ gem_group :test, :development do
   gem 'pry-doc'
   gem 'pry-stack_explorer'
   gem 'pry-byebug'
-  gem 'guard-rspec'
+  gem 'guard-rspec', require: false
   gem 'bullet'
   gem 'rack-mini-profiler', require: false
   gem 'spring'
