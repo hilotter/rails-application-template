@@ -4,4 +4,4 @@ development:
 
 production:
   worker_processes: 16
-  listen: "production-app-path/tmp/sockets/unicorn.sock"
+  listen: "unix:/production-app-path/tmp/sockets/unicorn.sock"
