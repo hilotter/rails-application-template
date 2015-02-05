@@ -275,6 +275,8 @@ public/uploads
 erd.pdf
 .rubocop.yml
 .DS_Store
+Gemfile.lock.tags
+tags
 CODE
 File.open('.gitignore', 'a') do |file|
   file.write gitignore
