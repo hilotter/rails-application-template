@@ -21,7 +21,7 @@ gem_group :test, :development do
   gem 'rack-mini-profiler', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
-  gem 'rails-erd', github: 'paulwittmann/rails-erd', branch: 'mavericks'
+  gem 'rails-erd'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'simplecov', require: false
