@@ -272,7 +272,6 @@ vendor/bundler
 coverage
 config/database.yml
 public/uploads
-erd.pdf
 .rubocop.yml
 .DS_Store
 Gemfile.lock.tags
