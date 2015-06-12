@@ -44,6 +44,7 @@ gem_group :development do
   gem 'capistrano3-unicorn',    require: false
 end
 
+gem 'annotate'
 gem 'rails_config'
 gems['bootstrap'] = yes?('create mock ? (bootstrap)')
 if gems['bootstrap']
@@ -173,6 +174,10 @@ config.after_initialize do
   end
 CODE
 environment bullet_setting, env: 'development'
+
+# setting annotate
+# ==================================================
+generate('annotate:install')
 
 # setting unicorn
 # ==================================================
