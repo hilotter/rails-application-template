@@ -205,12 +205,12 @@ uncomment_lines 'spec/rails_helper.rb', /Dir\[Rails\.root\.join/
 get "#{repo_url}/spec/support/factory_girl.rb", 'spec/support/factory_girl.rb'
 get "#{repo_url}/spec/support/database_cleaner.rb", 'spec/support/database_cleaner.rb'
 
-# setting rails_config
+# setting config
 # ==================================================
-generate('rails_config:install')
-rails_config = ''
+generate('config:install')
+config = ''
 if gems['twitter']
-  rails_config.concat <<-CODE
+  config.concat <<-CODE
 twitter:
   consumer_key: <CONSUMER KEY>
   consumer_secret: <CONSUMER SECRET>
@@ -218,7 +218,7 @@ CODE
 end
 
 if gems['facebook']
-  rails_config.concat <<-CODE
+  config.concat <<-CODE
 facebook:
   app_id: <APP ID>
   app_secret: <APP SECRET>
@@ -227,7 +227,7 @@ facebook:
     optional: []
 CODE
 end
-file 'config/settings.yml', rails_config
+file 'config/settings.yml', config
 
 # setting omniauth
 # ==================================================
