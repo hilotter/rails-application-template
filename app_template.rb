@@ -45,7 +45,7 @@ gem_group :development do
 end
 
 gem 'annotate'
-gem 'rails_config'
+gem 'config'
 gems['bootstrap'] = yes?('create mock ? (bootstrap)')
 if gems['bootstrap']
   gem 'simple_form'
