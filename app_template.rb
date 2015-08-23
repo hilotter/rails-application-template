@@ -171,7 +171,7 @@ environment application_setting
 
 if gems['slim-rails']
   slim_application_setting = <<-CODE
-    config.generators.template_engine = :slim
+config.generators.template_engine = :slim
   CODE
   environment slim_application_setting
 end
