@@ -53,6 +53,11 @@ if gems['bootstrap']
   gem 'twitter-bootstrap-rails'
 end
 
+gems['slim-rails'] = yes?('use slim ?')
+if gems['slim-rails']
+  gem 'slim-rails'
+end
+
 gems['twitter'] = yes?('use twitter login ?')
 if gems['twitter']
   gem 'omniauth'
@@ -163,6 +168,13 @@ config.time_zone = 'Tokyo'
     end
 CODE
 environment application_setting
+
+if gems['slim-rails']
+  slim_application_setting = <<-CODE
+    config.generators.template_engine = :slim
+  CODE
+  environment slim_application_setting
+end
 
 bullet_setting = <<-CODE
 config.after_initialize do
