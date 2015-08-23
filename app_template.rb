@@ -287,8 +287,8 @@ run 'bundle exec cap install STAGES=staging,production'
 # setting .gitignore
 # ==================================================
 gitignore = <<-CODE
-db/schema.rb
 vendor/bundler
+vendor/bundle
 coverage
 config/database.yml
 public/uploads
