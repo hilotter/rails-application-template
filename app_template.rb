@@ -174,6 +174,9 @@ if gems['slim-rails']
 config.generators.template_engine = :slim
   CODE
   environment slim_application_setting
+
+  remove_file 'app/views/layouts/application.html.erb'
+  get "#{repo_url}/app/views/layouts/application.html.slim", 'app/views/layouts/application.html.slim'
 end
 
 bullet_setting = <<-CODE
